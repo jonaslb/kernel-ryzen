@@ -108,13 +108,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.12.13
 %define stableversion 5.12
-%define pkgrelease 400
+%define pkgrelease 401
 
 # This is needed to do merge window version magic
 %define patchlevel 12
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 400%{?buildid}%{?dist}
+%define specrelease 401%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -786,8 +786,7 @@ Patch103: 0004-nvme-pci_look_for_StorageD3Enable_on_companion_ACPI_device_instea
 Patch104: 0005-v5-1-2-acpi-PM-Move-check-for-_DSD-StorageD3Enable-property-to-acpi.diff
 Patch105: 0006-v5-2-2-acpi-PM-Add-quirks-for-AMD-Renoir-Lucienne-CPUs-to-force-the-D3-hint.diff
 Patch106: 0007-ACPI_PM_s2idle_Add_missing_LPS0_functions_for_AMD.patch
-# May not be needed according to gitlab amd#1230. And can cause issues supposedy according to mail list. Leaving out for now.
-#Patch107: 0008-2-2-V2-platform-x86-force-LPS0-functions-for-AMD.diff
+Patch107: 0008-2-2-V2-platform-x86-force-LPS0-functions-for-AMD.diff
 
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
@@ -1308,7 +1307,7 @@ echo PATCHING
 %patch104 -p1
 %patch105 -p1
 %patch106 -p1
-#%patch107 -p1
+%patch107 -p1
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
