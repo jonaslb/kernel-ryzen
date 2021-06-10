@@ -783,8 +783,8 @@ Patch100: 0001-ACPI-processor-idle-fix-up-C-state-latency-if-not-ordered.patch
 Patch101: 0002-v5-usb-pci-quirks-disable-D3cold-on-xhci-suspend-for-s2idle-on-AMD-Renoir.diff
 Patch102: 0003-PCI-quirks-Quirk-PCI-d3hot-delay-for-AMD-xhci.diff
 Patch103: 0004-nvme-pci_look_for_StorageD3Enable_on_companion_ACPI_device_instead.patch
-Patch104: 0005-v5-1-2-acpi-PM-Move-check-for-_DSD-StorageD3Enable-property-to-acpi.diff
-Patch105: 0006-v5-2-2-acpi-PM-Add-quirks-for-AMD-Renoir-Lucienne-CPUs-to-force-the-D3-hint.diff
+Patch104: 0005-v8-1-2-ACPI-Check-StorageD3Enable-_DSD-property-in-ACPI-code.diff
+Patch105: 0006-v8-2-2-ACPI-Add-quirks-for-AMD-Renoir-Lucienne-CPUs-to-force-the-D3-hint.diff
 Patch106: 0007-ACPI_PM_s2idle_Add_missing_LPS0_functions_for_AMD.patch
 Patch107: 0008-2-2-V2-platform-x86-force-LPS0-functions-for-AMD.diff
 

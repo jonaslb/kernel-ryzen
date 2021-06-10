@@ -1,21 +1,25 @@
 diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index d260bc1f3e6e..1edb68d00b8e 100644
+index d260bc1f3e6e..c8600978b283 100644
 --- a/drivers/acpi/device_pm.c
 +++ b/drivers/acpi/device_pm.c
-@@ -1340,4 +1340,29 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+@@ -1340,4 +1340,33 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
  	return 1;
  }
  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
 +
 +/**
-+ * acpi_storage_d3 - Check if a storage device should use D3.
++ * acpi_storage_d3 - Check if D3 should be used in the suspend path
 + * @dev: Device to check
 + *
-+ * Returns %true if @dev should be put into D3 when the ->suspend method is
-+ * called, else %false.  The name of this function is somewhat misleading
-+ * as it has nothing to do with storage except for the name of the ACPI
-+ * property.  On some platforms resume will not work if this hint is ignored.
++ * Return %true if the platform firmware wants @dev to be programmed
++ * into D3hot or D3cold (if supported) in the suspend path, or %false
++ * when there is no specific preference. On some platforms, if this
++ * hint is ignored, @dev may remain unresponsive after suspending the
++ * platform as a whole.
 + *
++ * Although the property has storage in the name it actually is
++ * applied to the PCIe slot and plugging in a non-storage device the
++ * same platform restrictions will likely apply.
 + */
 +bool acpi_storage_d3(struct device *dev)
 +{
