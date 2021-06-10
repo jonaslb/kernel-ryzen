@@ -1,0 +1,67 @@
+diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+index c8600978b283..c40fc135ff0c 100644
+--- a/drivers/acpi/device_pm.c
++++ b/drivers/acpi/device_pm.c
+@@ -1360,6 +1360,9 @@ bool acpi_storage_d3(struct device *dev)
+ 	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	u8 val;
+ 
++	if (force_storage_d3())
++		return true;
++
+ 	if (!adev)
+ 		return false;
+ 	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index f973bbe90e5e..e29ec463bb07 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -236,6 +236,15 @@ static inline int suspend_nvs_save(void) { return 0; }
+ static inline void suspend_nvs_restore(void) {}
+ #endif
+ 
++#ifdef CONFIG_X86
++bool force_storage_d3(void);
++#else
++static inline bool force_storage_d3(void)
++{
++	return false;
++}
++#endif
++
+ /*--------------------------------------------------------------------------
+ 				Device properties
+   -------------------------------------------------------------------------- */
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index bdc1ba00aee9..5298bb4d81fe 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -135,3 +135,28 @@ bool acpi_device_always_present(struct acpi_device *adev)
+ 
+ 	return ret;
+ }
++
++/*
++ * AMD systems from Renoir and Lucienne *require* that the NVME controller
++ * is put into D3 over a Modern Standby / suspend-to-idle cycle.
++ *
++ * This is "typically" accomplished using the `StorageD3Enable`
++ * property in the _DSD that is checked via the `acpi_storage_d3` function
++ * but this property was introduced after many of these systems launched
++ * and most OEM systems don't have it in their BIOS.
++ *
++ * The Microsoft documentation for StorageD3Enable mentioned that Windows has
++ * a hardcoded allowlist for D3 support, which was used for these platforms.
++ *
++ * This allows quirking on Linux in a similar fashion.
++ */
++const struct x86_cpu_id storage_d3_cpu_ids[] = {
++	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
++	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
++	{}
++};
++
++bool force_storage_d3(void)
++{
++	return x86_match_cpu(storage_d3_cpu_ids);
++}
