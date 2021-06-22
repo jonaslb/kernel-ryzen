@@ -780,7 +780,8 @@ Patch1: patch-%{stableversion}-redhat.patch
 %endif
 
 Patch100: 0001-ACPI-processor-idle-fix-up-C-state-latency-if-not-ordered.patch
-Patch101: 0002-v5-usb-pci-quirks-disable-D3cold-on-xhci-suspend-for-s2idle-on-AMD-Renoir.diff
+# Looks like this patch made it to stable
+#Patch101: 0002-v5-usb-pci-quirks-disable-D3cold-on-xhci-suspend-for-s2idle-on-AMD-Renoir.diff
 Patch102: 0003-PCI-quirks-Quirk-PCI-d3hot-delay-for-AMD-xhci.diff
 Patch103: 0004-nvme-pci_look_for_StorageD3Enable_on_companion_ACPI_device_instead.patch
 Patch104: 0005-v8-1-2-ACPI-Check-StorageD3Enable-_DSD-property-in-ACPI-code.diff
@@ -1301,7 +1302,7 @@ ApplyOptionalPatch linux-kernel-test.patch
 
 echo PATCHING
 %patch100 -p1
-%patch101 -p1
+#%patch101 -p1
 %patch102 -p1
 %patch103 -p1
 %patch104 -p1
